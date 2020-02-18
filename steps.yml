@@ -69,5 +69,5 @@ plot:
   publisher:
     publisher_type: interpolated-pub
     publish:
-      fitting_plot: '{plot_outputs}'
+      datamc_plot: '{plot_outputs}'
 
