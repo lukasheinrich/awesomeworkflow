@@ -42,3 +42,13 @@ stages:
       histogram_file: {step: merge, output: merged_file}
       fit_outputs: '{workdir}'
     step: {$ref: 'steps.yml#/fit'}
+
+- name: plot
+  dependencies: [merge]
+  scheduler:
+    scheduler_type: singlestep-stage
+    parameters:
+      histogram_file: {step: merge, output: merged_file}
+      plot_outputs: '{workdir}'
+    step: {$ref: 'steps.yml#/plot'}
+

@@ -5,8 +5,8 @@ skim:
       ./skim {input_file} {output_file} {cross_section} 11467.0 0.1 
   environment:
     environment_type: 'docker-encapsulated'
-    image: lukasheinrich/payload-stage3-analysis
-    imagetag: latest
+    image: gitlab-registry.cern.ch/awesome-workshop/awesome-analysis-eventselection-stage3
+    imagetag: master
   publisher:
     publisher_type: interpolated-pub
     publish:
@@ -21,8 +21,8 @@ histogram:
       done
   environment:
     environment_type: 'docker-encapsulated'
-    image: lukasheinrich/payload-stage3-analysis
-    imagetag: latest
+    image: gitlab-registry.cern.ch/awesome-workshop/awesome-analysis-eventselection-stage3
+    imagetag: master
   publisher:
     publisher_type: interpolated-pub
     glob: true
@@ -36,8 +36,8 @@ merge:
       hadd {output_file} {input_files}
   environment:
     environment_type: 'docker-encapsulated'
-    image: lukasheinrich/payload-stage3-stats
-    imagetag: latest
+    image: gitlab-registry.cern.ch/awesome-workshop/awesome-analysis-eventselection-stage3
+    imagetag: master
   publisher:
     publisher_type: interpolated-pub
     publish:
@@ -50,11 +50,24 @@ fit:
       python fit.py {histogram_file} {fit_outputs}
   environment:
     environment_type: 'docker-encapsulated'
-    image: gitlab-registry.cern.ch/awesome-workshop/payload-stage3-stats
+    image: gitlab-registry.cern.ch/awesome-workshop/awesome-analysis-statistics-stage3
     imagetag: master
   publisher:
     publisher_type: interpolated-pub
     publish:
       fit_results: '{fit_outputs}/fit.png'
         
-            
+plot:
+  process:
+    process_type: 'interpolated-script-cmd'
+    script: |
+      python plot.py {histogram_file} {plot_outputs} 0.1
+  environment:
+    environment_type: 'docker-encapsulated'
+    image: gitlab-registry.cern.ch/awesome-workshop/awesome-analysis-eventselection-stage3
+    imagetag: master
+  publisher:
+    publisher_type: interpolated-pub
+    publish:
+      fitting_plot: '{plot_outputs}'
+
